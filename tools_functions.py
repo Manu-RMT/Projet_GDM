@@ -49,7 +49,8 @@ def deplacement_fichier(path_source,path_destinatation, zone="landing_zone"):
             if os.path.exists(file_source):
                 shutil.copy(file_source,file_dest)  
             
-            
+
+          
 def creation_metadata_technique(path_source_data,path_landing_zone):
     path_metadata = os.path.join(path_landing_zone,"MetaDonnees", "metadata.csv")
     metadata = open(path_metadata,"w", encoding="utf8")
@@ -83,7 +84,7 @@ def creation_metadata_technique(path_source_data,path_landing_zone):
                     ligne_nom_fichier = cle + ";" + "nom_fichier" + ";" + file + "\n"
                     ligne_prov_fichier_html = cle + ";" + "provenance_du_fichier" + ";" + path_source_data + "\n"
                     ligne_dest_ficiher_html = cle + ";" + "destination_du_fichier" + ";" + os.path.join(path_landing_zone,folder,folder2) + "\n"
-                    ligne_taille_ficiher = cle + ";" + "taille_ficiher" + ";" + str(len(file)) + "\n" 
+                    ligne_taille_ficiher = cle + ";" + "taille_du_fichier" + ";" + str(len(file)) + "\n" 
                     
                     # Rempliisage des lignes de metadonnes
                     myListeDeLigneAEcrire.append(ligne_date_publi)
