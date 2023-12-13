@@ -1,4 +1,4 @@
-import os,shutil, fnmatch, csv
+import os,shutil, fnmatch, csv, pandas as pd
 from datetime import datetime
 from tools_getter_setter import *
 from bs4 import BeautifulSoup
@@ -128,8 +128,14 @@ def metadata_creation(path_source,type):
         f.close()
 
         mySoup = BeautifulSoup(myHTMLContents, 'lxml')
-        print(mySoup)
-        doc_id = file[-16:-8]
+        
+        # cle unique
+        position_dernier_tiret = file.rfind('-')
+        if position_dernier_tiret != -1:
+            cle = file[position_dernier_tiret + 1:]
+            cle = cle[:-5]
+            
+        doc_id = cle
         value = []
         if type == "INFO-SOC":
             field = ["company", "city", "nb_employee", "company_description","type"]
@@ -138,28 +144,25 @@ def metadata_creation(path_source,type):
             value.append(Get_taille_entreprise_SOC(mySoup))
             value.append(Get_description_entreprise_SOC(mySoup))
             value.append("INFO-SOC")
-        # elif type == "AVIS-SOC":
-        #     field = ["company","avg_rating","type"]
-        #     value.append(Get_nom_entreprise_AVI(mySoup))
-        #     value.append(Get_note_moy_entreprise_AVI(mySoup))
-        #     value.append("AVIS-SOC")
-        # else:
-        #     field = ["lib_job","company","city", "job_description","type"]
-        #     value.append(Get_libelle_emploi_EMP(mySoup))
-        #     value.append(Get_nom_entreprise_EMP(mySoup))
-        #     value.append(Get_ville_emploi_EMP(mySoup))
-        #     value.append(Get_texte_emploi_EMP(mySoup))
-        #     value.append("INFO-EMP")
-        # for i, column in enumerate(field) :
-        #     metadata.append([doc_id,column,value[i]])
+        elif type == "AVIS-SOC":
+            field = ["company","avg_rating","type"]
+            value.append(Get_nom_entreprise_AVI(mySoup))
+            value.append(Get_note_moy_entreprise_AVI(mySoup))
+            value.append("AVIS-SOC")
+        else:
+            field = ["lib_job","company","city", "job_description","type"]
+            value.append(Get_libelle_emploi_EMP(mySoup))
+            value.append(Get_nom_entreprise_EMP(mySoup))
+            value.append(Get_ville_emploi_EMP(mySoup))
+            value.append(Get_texte_emploi_EMP(mySoup))
+            value.append("INFO-EMP")
+        for i, column in enumerate(field) :
+            metadata.append([doc_id,column,value[i]])
             
     return(metadata) 
     
     
 def csv_maker(data_list,path):
-    
-    
-
     myPathMetaDataOut = path
     myPathFileNameMetaDataOut = myPathMetaDataOut + "/" + "metadata.csv"
 
@@ -171,19 +174,6 @@ def csv_maker(data_list,path):
     f.close()
 
 
-    
-    
-    myPathMetaDataOut = path
-    myPathFileNameMetaDataOut = os.path.join(myPathMetaDataOut, "metadata.csv")
-
-    f = open(myPathFileNameMetaDataOut, 'w', newline='', encoding="utf8")
-
-    myWriter = csv.writer(f, delimiter=';', quotechar='"',  quoting=csv.QUOTE_ALL, lineterminator='\n')
-
-    myWriter.writerows(data_list)
-    f.close()    
-    
-    
 #==============================================================================
 #-- Création du script des métadonnées descriptives
 #==============================================================================
@@ -198,7 +188,5 @@ def creation_metadata_descriptif(path_landing_zone,path_curated_zone):
     path_source =  path_landing_zone + "LINKEDIN/EMP/"
     metadata.extend(metadata_creation(path_source,"INFO-EMP"))
     
-    
     ### Stockage des métadonnées dans un csv
-    csv_maker(metadata, path_curated_zone)
-       
+    csv_maker(metadata, os.path.join(path_curated_zone,"MetaDonnees"))

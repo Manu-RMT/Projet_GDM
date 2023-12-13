@@ -101,14 +101,14 @@ def Get_note_moy_entreprise_AVI(Soup):
 #==============================================================================
 import re
 def Get_nom_entreprise_SOC(Soup):
-    myTest = len(Soup.find_all('h1', attrs = {" strong tightAll"}))
-    print(myTest)
-    return True
+    myTest = Soup.find_all('h1', attrs = {"strong tightAll"})[0]
+   
     if (myTest == []) : 
         Result = 'NULL'
     else:
         myTxtTmp = str(myTest)
-        Result = re.sub(r'(.*)<h1 class=" strong tightAll" data-company="(.*)" title="">(.*)', r'\2', myTxtTmp)
+        Result = re.sub(r'(.*)<h1 class="strong tightAll" data-company="(.*)" title="">(.*)', r'\2', myTxtTmp)
+        print(Result)
     return(Result)
 
 
@@ -150,23 +150,16 @@ def Get_taille_entreprise_SOC(Soup):
 #==============================================================================
 #-- GLASSDOOR (SOCIETE) : Fonction renvoyant la description de l'entreprise 
 #
-# !!! ==> A FAIRE !!!
 #
 #==============================================================================
 
 def Get_description_entreprise_SOC(Soup):
 #    myTest = str(mySoup.find_all('div', attrs = {'class':"infoEntity"})[1].span.contents[0])
-    myTest = str(Soup.find_all('div', attrs = {'id':"EmpBasicInfo"}))
-    #..........................................
-    #..
-    #... coder eventuellement des choses ici
-    #.......
-    #..........................................
+    myTest = Soup.find_all('div', attrs = {'class':"margTop empDescription"})
     if (myTest == []) : 
         Result = 'NULL'
     else:
-        Soup2 = Soup(myTest, 'lxml')
-        myTxtTmp = str(Soup2.find_all('div', attrs = {'class':""})[2])
+        myTxtTmp = str(myTest)
         myTxtTmp1 = re.sub(r'(.*)data-full="(.*).<br/>(.*)', r'\2', myTxtTmp)
         Result = myTxtTmp1
     return(Result)

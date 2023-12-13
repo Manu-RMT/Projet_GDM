@@ -10,13 +10,11 @@ path_curated_zone = "D:/COURS LYON 2/COURS M2/TD Gouvernence des données massiv
 # deplacement_fichier(path_source_html, path_landing_zone)
 
 # création de la métadonnées techniques
-creation_metadata_technique(path_source_html,path_landing_zone)  
+# creation_metadata_technique(path_source_html,path_landing_zone)  
 
 ## Curated ZONE
 # deplacement dans curate_zone
 # deplacement_fichier(path_source_html, path_curated_zone,"curated_zone")
 
-#Création des métadonnées techniques
+#Création des métadonnées descriptif
 # creation_metadata_descriptif(path_landing_zone,path_curated_zone)
-
-# # parcours du la métadonnées
