@@ -86,6 +86,7 @@ def creation_metadata_technique(path_source_data,path_landing_zone):
                     type_file = '-'.join(nom_file[5:7])
                     #lien html
                     lien_file = os.path.join(path_landing_zone,folder,folder2,file)
+                    #chemin fichier
                     
                     # construction des métadonnées
                     ligne_date_publi = cle + ";" + "date_heure_recuperation" + ";" + date_file+"\n" 
@@ -93,7 +94,8 @@ def creation_metadata_technique(path_source_data,path_landing_zone):
                     ligne_prov_fichier_html = cle + ";" + "provenance_du_fichier" + ";" + path_source_data + "\n"
                     ligne_dest_ficiher_html = cle + ";" + "destination_du_fichier" + ";" + os.path.join(path_landing_zone,folder,folder2) + "\n"
                     ligne_source_fichier = cle + ";" + "source_du_fichier" + ";" + source_file + "\n"
-                    ligne_type_fihier = cle + ";" + "type_du_fichier" + ";" + type_file + "\n"
+                    ligne_type_fichier = cle + ";" + "type_du_fichier" + ";" + type_file + "\n"
+                    ligne_lien_fichier = cle + ";" + "lien_fichier" + ";" + lien_file + "\n"
                     ligne_taille_ficiher = cle + ";" + "taille_du_fichier" + ";" + str(len(file)) + "\n" 
                     
                     # Rempliisage des lignes de metadonnes
@@ -102,15 +104,16 @@ def creation_metadata_technique(path_source_data,path_landing_zone):
                     myListeDeLigneAEcrire.append(ligne_prov_fichier_html)
                     myListeDeLigneAEcrire.append(ligne_dest_ficiher_html)
                     myListeDeLigneAEcrire.append(ligne_source_fichier)
-                    myListeDeLigneAEcrire.append(ligne_type_fihier)
+                    myListeDeLigneAEcrire.append(ligne_type_fichier)
+                    myListeDeLigneAEcrire.append(ligne_lien_fichier)
                     myListeDeLigneAEcrire.append(ligne_taille_ficiher)
     # Ecriture dans le fichier de métadonnées techniques
     metadata.writelines(myListeDeLigneAEcrire)
     metadata.close()
     
-        
+
 #==============================================================================
-#-- Création du script des métadonnées descriptives
+#-- Création du script des lignes de métadonnées descriptives
 #==============================================================================
 def metadata_creation(path_source,type):
     #metadata creation
@@ -125,7 +128,7 @@ def metadata_creation(path_source,type):
         f.close()
 
         mySoup = BeautifulSoup(myHTMLContents, 'lxml')
-        
+        print(mySoup)
         doc_id = file[-16:-8]
         value = []
         if type == "INFO-SOC":
@@ -135,25 +138,28 @@ def metadata_creation(path_source,type):
             value.append(Get_taille_entreprise_SOC(mySoup))
             value.append(Get_description_entreprise_SOC(mySoup))
             value.append("INFO-SOC")
-        elif type == "AVIS-SOC":
-            field = ["company","avg_rating","type"]
-            value.append(Get_nom_entreprise_AVI(mySoup))
-            value.append(Get_note_moy_entreprise_AVI(mySoup))
-            value.append("AVIS-SOC")
-        else:
-            field = ["lib_job","company","city", "job_description","type"]
-            value.append(Get_libelle_emploi_EMP(mySoup))
-            value.append(Get_nom_entreprise_EMP(mySoup))
-            value.append(Get_ville_emploi_EMP(mySoup))
-            value.append(Get_texte_emploi_EMP(mySoup))
-            value.append("INFO-EMP")
-        for i, column in enumerate(field) :
-            metadata.append([doc_id,column,value[i]])
+        # elif type == "AVIS-SOC":
+        #     field = ["company","avg_rating","type"]
+        #     value.append(Get_nom_entreprise_AVI(mySoup))
+        #     value.append(Get_note_moy_entreprise_AVI(mySoup))
+        #     value.append("AVIS-SOC")
+        # else:
+        #     field = ["lib_job","company","city", "job_description","type"]
+        #     value.append(Get_libelle_emploi_EMP(mySoup))
+        #     value.append(Get_nom_entreprise_EMP(mySoup))
+        #     value.append(Get_ville_emploi_EMP(mySoup))
+        #     value.append(Get_texte_emploi_EMP(mySoup))
+        #     value.append("INFO-EMP")
+        # for i, column in enumerate(field) :
+        #     metadata.append([doc_id,column,value[i]])
             
     return(metadata) 
     
     
 def csv_maker(data_list,path):
+    
+    
+
     myPathMetaDataOut = path
     myPathFileNameMetaDataOut = myPathMetaDataOut + "/" + "metadata.csv"
 
@@ -176,3 +182,23 @@ def csv_maker(data_list,path):
 
     myWriter.writerows(data_list)
     f.close()    
+    
+    
+#==============================================================================
+#-- Création du script des métadonnées descriptives
+#==============================================================================
+def creation_metadata_descriptif(path_landing_zone,path_curated_zone):     
+    metadata = []
+    metadata.append(["Doc_ID","Field","Value"])
+    
+    path_source = path_landing_zone + "GLASSDOOR/SOC/"
+    metadata.extend(metadata_creation(path_source,"INFO-SOC"))
+    path_source = path_landing_zone + "GLASSDOOR/AVI/"
+    metadata.extend(metadata_creation(path_source,"AVIS-SOC"))
+    path_source =  path_landing_zone + "LINKEDIN/EMP/"
+    metadata.extend(metadata_creation(path_source,"INFO-EMP"))
+    
+    
+    ### Stockage des métadonnées dans un csv
+    csv_maker(metadata, path_curated_zone)
+       

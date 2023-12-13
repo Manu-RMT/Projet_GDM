@@ -101,8 +101,9 @@ def Get_note_moy_entreprise_AVI(Soup):
 #==============================================================================
 import re
 def Get_nom_entreprise_SOC(Soup):
-    myTest = Soup.find_all('h1', attrs = {" strong tightAll"})[0]
-
+    myTest = len(Soup.find_all('h1', attrs = {" strong tightAll"}))
+    print(myTest)
+    return True
     if (myTest == []) : 
         Result = 'NULL'
     else:

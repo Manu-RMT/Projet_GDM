@@ -16,22 +16,7 @@ creation_metadata_technique(path_source_html,path_landing_zone)
 # deplacement dans curate_zone
 # deplacement_fichier(path_source_html, path_curated_zone,"curated_zone")
 
-
-
-
-### Création des métadonnées techniques
-# metadata = []
-# metadata.append(["Doc_ID","Field","Value"])
-
-# path_source = "C:/Etudes/M2/S1/Gestion_de_donnees_massives/Projet/TD_DATALAKE/DATALAKE/1_LANDING_ZONE/GLASSDOOR/SOC/"
-# metadata.extend(metadata_creation(path_source,"INFO-SOC"))
-# path_source = "C:/Etudes/M2/S1/Gestion_de_donnees_massives/Projet/TD_DATALAKE/DATALAKE/1_LANDING_ZONE/GLASSDOOR/AVI/"
-# metadata.extend(metadata_creation(path_source,"AVIS-SOC"))
-# path_source = "C:/Etudes/M2/S1/Gestion_de_donnees_massives/Projet/TD_DATALAKE/DATALAKE/1_LANDING_ZONE/LINKEDIN/EMP/"
-# metadata.extend(metadata_creation(path_source,"INFO-EMP"))
-
-
-# ### Stockage des métadonnées dans un csv
-# csv_maker(metadata, "C:/Etudes/M2/S1/Gestion_de_donnees_massives/Projet/TD_DATALAKE/DATALAKE/2_CURATED_ZONE")
+#Création des métadonnées techniques
+# creation_metadata_descriptif(path_landing_zone,path_curated_zone)
 
 # # parcours du la métadonnées
