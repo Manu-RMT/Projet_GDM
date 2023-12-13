@@ -1,3 +1,5 @@
+import pandas as pd
+
 # ==============================================================================
 #-- LINKEDIN (EMPLOI) : Libellé de l'offre
 #==============================================================================
@@ -101,14 +103,14 @@ def Get_note_moy_entreprise_AVI(Soup):
 #==============================================================================
 import re
 def Get_nom_entreprise_SOC(Soup):
+
     myTest = Soup.find_all('h1', attrs = {"strong tightAll"})[0]
-   
+    
     if (myTest == []) : 
         Result = 'NULL'
     else:
         myTxtTmp = str(myTest)
         Result = re.sub(r'(.*)<h1 class="strong tightAll" data-company="(.*)" title="">(.*)', r'\2', myTxtTmp)
-        print(Result)
     return(Result)
 
 
@@ -144,13 +146,10 @@ def Get_taille_entreprise_SOC(Soup):
         Result = myTxtTmp1
     return(Result)
 
-#print(Get_taille_entreprise_SOC(mySoup))
 
 
 #==============================================================================
 #-- GLASSDOOR (SOCIETE) : Fonction renvoyant la description de l'entreprise 
-#
-#
 #==============================================================================
 
 def Get_description_entreprise_SOC(Soup):
@@ -166,3 +165,15 @@ def Get_description_entreprise_SOC(Soup):
 
 #print(Get_description_entreprise_SOC(mySoup))
 
+#==============================================================================
+#-- Retourne le chemin du fichier en fonction du type
+#==============================================================================
+def get_html_links_csv(csv,type):
+    data = pd.read_csv(csv, delimiter=';')
+        
+    types = data[data.colonne=='type_du_fichier']
+    types = types[types.valeur==type]
+    html_links = pd.merge(data, types, how="inner", on=["cle_unique","cle_unique"])
+    html_links = html_links[html_links.colonne_x=='lien_fichier']
+    html_links = html_links["valeur_x"]
+    return html_links
