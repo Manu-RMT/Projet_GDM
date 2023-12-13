@@ -33,9 +33,6 @@ def Get_nom_entreprise_EMP(Soup):
             Result = myTest
     return(Result)
 
-#print(Get_nom_entreprise_EMP(mySoup))
-
-
 
 #==============================================================================
 #-- LINKEDIN (EMPLOI) : Ville de l'emploi proposé
@@ -52,7 +49,6 @@ def Get_ville_emploi_EMP (Soup):
             Result = myTest
     return(Result)
 
-#print(Get_ville_emploi_EMP(mySoup))
 
 
 #==============================================================================
@@ -80,8 +76,6 @@ def Get_nom_entreprise_AVI (Soup):
     else:
         Result = myTest
     return(Result)
-
-#print(Get_nom_entreprise_AVI(mySoup))
 
 
 
@@ -163,7 +157,7 @@ def Get_description_entreprise_SOC(Soup):
         Result = myTxtTmp1
     return(Result)
 
-#print(Get_description_entreprise_SOC(mySoup))
+
 
 #==============================================================================
 #-- Retourne le chemin du fichier en fonction du type

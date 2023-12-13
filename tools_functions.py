@@ -120,7 +120,6 @@ def metadata_csv_creation(csv_source,type):
     metadata = []
    
     for file in get_html_links_csv(csv_source, type):
-        print(file)
         #doc preparation
         f = open(file, "r", encoding="utf8")
         myHTMLContents = f.read()
@@ -137,7 +136,6 @@ def metadata_csv_creation(csv_source,type):
         doc_id = cle
         value = []
         if type == "INFO-SOC":
-            print("INFO-SOC")
             field = ["company", "city", "nb_employee", "company_description","type"]
             value.append(Get_nom_entreprise_SOC(mySoup))
             value.append(Get_ville_entreprise_SOC(mySoup))
@@ -145,13 +143,11 @@ def metadata_csv_creation(csv_source,type):
             value.append(Get_description_entreprise_SOC(mySoup))
             value.append("INFO-SOC")
         elif type == "AVIS-SOC":
-            print("AVIS-SOC")
             field = ["company","avg_rating","type"]
             value.append(Get_nom_entreprise_AVI(mySoup))
             value.append(Get_note_moy_entreprise_AVI(mySoup))
             value.append("AVIS-SOC")
         else:
-            print("AUTRES")
             field = ["lib_job","company","city", "job_description","type"]
             value.append(Get_libelle_emploi_EMP(mySoup))
             value.append(Get_nom_entreprise_EMP(mySoup))
@@ -179,7 +175,7 @@ def csv_maker(data_list,path):
 #==============================================================================
 #-- Création du script des métadonnées descriptives with CSV
 #==============================================================================
-def creation_metadata_descriptif_csv(path_landing_zone,path_curated_zone):     
+def creation_metadata_descriptif(path_landing_zone,path_curated_zone):     
     metadata = []
     metadata.append(["Doc_ID","Field","Value"])
     

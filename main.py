@@ -23,4 +23,3 @@ deplacement_fichier(path_source_html, path_curated_zone,"curated_zone")
 #Création des métadonnées descriptif
 creation_metadata_descriptif(path_landing_zone,path_curated_zone)
 
-creation_metadata_descriptif_csv(path_landing_zone,path_curated_zone)
