@@ -124,7 +124,7 @@ def metadata_csv_creation(csv_source,type):
         f = open(file, "r", encoding="utf8")
         myHTMLContents = f.read()
         f.close()
-
+    
         mySoup = BeautifulSoup(myHTMLContents, 'lxml')
         
         # cle unique
@@ -156,7 +156,7 @@ def metadata_csv_creation(csv_source,type):
             value.append("INFO-EMP")
         for i, column in enumerate(field) :
             metadata.append([doc_id,column,value[i]])
-            
+        
     return(metadata) 
     
     

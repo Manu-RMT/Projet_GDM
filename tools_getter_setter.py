@@ -15,8 +15,6 @@ def Get_libelle_emploi_EMP(Soup):
             Result = myTest
     return(Result)
 
-#print(Get_libelle_emploi_EMP(mySoup))
-
 
 #==============================================================================
 #-- LINKEDIN (EMPLOI) : Nom de la Société demandeuse
@@ -97,8 +95,7 @@ def Get_note_moy_entreprise_AVI(Soup):
 #==============================================================================
 import re
 def Get_nom_entreprise_SOC(Soup):
-
-    myTest = Soup.find_all('h1', attrs = {"strong tightAll"})[0]
+    myTest = Soup.find_all('h1', attrs = {"strong tightAll"})[0].span.contents[0]
     
     if (myTest == []) : 
         Result = 'NULL'
@@ -114,8 +111,12 @@ def Get_nom_entreprise_SOC(Soup):
 #==============================================================================
 
 def Get_ville_entreprise_SOC(Soup):
-    myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].span.contents[0])
-
+    type_donne = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].label.contents[0])
+    
+    if type_donne != "Siège social":
+        myTest = []
+    else:
+        myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].span.contents[0])
     if (myTest == []) : 
         Result = 'NULL'
     else:
@@ -130,8 +131,13 @@ def Get_ville_entreprise_SOC(Soup):
 #==============================================================================
 
 def Get_taille_entreprise_SOC(Soup):
-    myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[2].span.contents[0])
-
+    type_donne = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].label.contents[0])
+    
+    if type_donne != "Siège social":
+        myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].span.contents[0])
+    else:
+        myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[2].span.contents[0])
+    
     if (myTest == []) : 
         Result = 'NULL'
     else:
@@ -147,7 +153,6 @@ def Get_taille_entreprise_SOC(Soup):
 #==============================================================================
 
 def Get_description_entreprise_SOC(Soup):
-#    myTest = str(mySoup.find_all('div', attrs = {'class':"infoEntity"})[1].span.contents[0])
     myTest = Soup.find_all('div', attrs = {'class':"margTop empDescription"})
     if (myTest == []) : 
         Result = 'NULL'
