@@ -47,7 +47,6 @@ def Get_ville_emploi_EMP (Soup):
             Result = myTest
     return(Result)
 
-<<<<<<< HEAD
 
 #==============================================================================
 #-- LINKEDIN (EMPLOI) : Nombre d'employé
@@ -134,8 +133,6 @@ def Get_secteurs(Soup):
         Result = 'NULL'
 
     return Result
-=======
->>>>>>> 74c29408a1dd6f5b3eb956c959faee4f07486a86
 
 
 #==============================================================================
@@ -143,11 +140,11 @@ def Get_secteurs(Soup):
 #==============================================================================
 def Get_texte_emploi_EMP (Soup):
     myTest = Soup.find_all('div', attrs = {"description__text description__text--rich"})
-    if (myTest == []) : 
+    if (myTest == []) :
         Result = 'NULL'
     else:
         myTest = str(myTest[0].text)
-        if (myTest == []) : 
+        if (myTest == []) :
             Result = 'NULL'
         else:
             Result = myTest
@@ -158,7 +155,7 @@ def Get_texte_emploi_EMP (Soup):
 #==============================================================================
 def Get_nom_entreprise_AVI (Soup):
     myTest = Soup.find_all('div', attrs = {"class":"header cell info"})[0].span.contents[0]
-    if (myTest == []) : 
+    if (myTest == []) :
         Result = 'NULL'
     else:
         Result = myTest
@@ -171,10 +168,10 @@ def Get_nom_entreprise_AVI (Soup):
 #==============================================================================
 def Get_note_moy_entreprise_AVI(Soup):
     myTest = Soup.find_all('div', attrs = {'class':'v2__EIReviewsRatingsStylesV2__ratingNum v2__EIReviewsRatingsStylesV2__large'})[0].contents[0]
-    if (myTest == []) : 
+    if (myTest == []) :
         Result = 'NULL'
     else:
-        Result = myTest  
+        Result = myTest
     return(Result)
 
 
@@ -185,8 +182,8 @@ def Get_note_moy_entreprise_AVI(Soup):
 import re
 def Get_nom_entreprise_SOC(Soup):
     myTest = Soup.find_all('h1', attrs = {"strong tightAll"})[0].span.contents[0]
-    
-    if (myTest == []) : 
+
+    if (myTest == []) :
         Result = 'NULL'
     else:
         myTxtTmp = str(myTest)
@@ -201,12 +198,12 @@ def Get_nom_entreprise_SOC(Soup):
 
 def Get_ville_entreprise_SOC(Soup):
     type_donne = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].label.contents[0])
-    
+
     if type_donne != "Siège social":
         myTest = []
     else:
         myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].span.contents[0])
-    if (myTest == []) : 
+    if (myTest == []) :
         Result = 'NULL'
     else:
         myTxtTmp = str(myTest)
@@ -221,13 +218,13 @@ def Get_ville_entreprise_SOC(Soup):
 
 def Get_taille_entreprise_SOC(Soup):
     type_donne = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].label.contents[0])
-    
+
     if type_donne != "Siège social":
         myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[1].span.contents[0])
     else:
         myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[2].span.contents[0])
-    
-    if (myTest == []) : 
+
+    if (myTest == []) :
         Result = 'NULL'
     else:
         myTxtTmp = str(myTest)
@@ -235,7 +232,6 @@ def Get_taille_entreprise_SOC(Soup):
         Result = myTxtTmp1
     return(Result)
 
-<<<<<<< HEAD
 
 #==============================================================================
 #-- GLASSDOOR (SOCIETE) : Date de fondation
@@ -280,8 +276,6 @@ def Get_secteur_entreprise_SOC(Soup):
     return(Result)
 
 
-=======
->>>>>>> 74c29408a1dd6f5b3eb956c959faee4f07486a86
 
 
 #==============================================================================

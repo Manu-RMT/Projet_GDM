@@ -169,18 +169,12 @@ def metadata_csv_creation(csv_source,type):
         for i, column in enumerate(field) :
             metadata.append([doc_id,column,value[i]])
         
-<<<<<<< HEAD
     return(metadata)
 
 
 # ==============================================================================
 # -- Création des CSV de metadata
 # ==============================================================================
-=======
-    return(metadata) 
-    
-    
->>>>>>> 74c29408a1dd6f5b3eb956c959faee4f07486a86
 def csv_maker(data_list,path):
     myPathMetaDataOut = path
     myPathFileNameMetaDataOut = myPathMetaDataOut + "/" + "metadata.csv"
@@ -192,7 +186,7 @@ def csv_maker(data_list,path):
     myWriter.writerows(data_list)
     f.close()
 
-    
+
 #==============================================================================
 #-- Création du script des métadonnées descriptives with CSV
 #==============================================================================
