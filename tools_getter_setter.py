@@ -47,6 +47,7 @@ def Get_ville_emploi_EMP (Soup):
             Result = myTest
     return(Result)
 
+<<<<<<< HEAD
 
 #==============================================================================
 #-- LINKEDIN (EMPLOI) : Nombre d'employé
@@ -133,6 +134,8 @@ def Get_secteurs(Soup):
         Result = 'NULL'
 
     return Result
+=======
+>>>>>>> 74c29408a1dd6f5b3eb956c959faee4f07486a86
 
 
 #==============================================================================
@@ -232,6 +235,7 @@ def Get_taille_entreprise_SOC(Soup):
         Result = myTxtTmp1
     return(Result)
 
+<<<<<<< HEAD
 
 #==============================================================================
 #-- GLASSDOOR (SOCIETE) : Date de fondation
@@ -276,6 +280,8 @@ def Get_secteur_entreprise_SOC(Soup):
     return(Result)
 
 
+=======
+>>>>>>> 74c29408a1dd6f5b3eb956c959faee4f07486a86
 
 
 #==============================================================================
