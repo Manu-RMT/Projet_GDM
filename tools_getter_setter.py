@@ -237,7 +237,15 @@ def Get_taille_entreprise_SOC(Soup):
 #-- GLASSDOOR (SOCIETE) : Date de fondation
 #==============================================================================
 def Get_FONDES_entreprise_SOC(Soup):
-    myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[3].span.contents[0])
+    trouve = False
+    for i in range(1, 8):
+        if trouve == True:
+            continue
+        type_donne = str(Soup.find_all('div', attrs={'class': "infoEntity"})[i].label.contents[0])
+        print(type_donne)
+        if type_donne == "Fondé en":
+            myTest = str(Soup.find_all('div', attrs={'class': "infoEntity"})[i].span.contents[0])
+            trouve = True
 
     if (myTest == []) :
         Result = 'NULL'
@@ -251,7 +259,15 @@ def Get_FONDES_entreprise_SOC(Soup):
 #-- GLASSDOOR (SOCIETE) : Fonction renvoyant le type de l'entreprises
 #==============================================================================
 def Get_type_entreprise_SOC(Soup):
-    myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[4].span.contents[0])
+    # E1127781_P1
+    trouve=False
+    for i in range(1,8):
+        if trouve == True:
+            continue
+        type_donne = str(Soup.find_all('div', attrs={'class': "infoEntity"})[i].label.contents[0])
+        if type_donne == "Type":
+            myTest = str(Soup.find_all('div', attrs={'class': "infoEntity"})[i].span.contents[0])
+            trouve=True
 
     if (myTest == []) :
         Result = 'NULL'
@@ -265,7 +281,14 @@ def Get_type_entreprise_SOC(Soup):
 #-- GLASSDOOR (SOCIETE) : Fonction renvoyant le secteur d'activité de l'entreprise
 #==============================================================================
 def Get_secteur_entreprise_SOC(Soup):
-    myTest = str(Soup.find_all('div', attrs = {'class':"infoEntity"})[5].span.contents[0])
+    trouve = False
+    for i in range(1, 8):
+        if trouve == True:
+            continue
+        type_donne = str(Soup.find_all('div', attrs={'class': "infoEntity"})[i].label.contents[0])
+        if type_donne == "Secteur":
+            myTest = str(Soup.find_all('div', attrs={'class': "infoEntity"})[i].span.contents[0])
+            trouve = True
 
     if (myTest == []) :
         Result = 'NULL'
@@ -288,7 +311,10 @@ def Get_description_entreprise_SOC(Soup):
         Result = 'NULL'
     else:
         myTxtTmp = str(myTest)
-        myTxtTmp1 = re.sub(r'(.*)data-full="(.*).<br/>(.*)', r'\2', myTxtTmp)
+        match = re.search(r'data-full="([^"]+)"', myTxtTmp)
+        if match:
+            myTxtTmp1 = match.group(1)
+        # myTxtTmp1 = re.sub(r'(.*)data-full="(.*).<br/>(.*)', r'\2', myTxtTmp)
         Result = myTxtTmp1
     return(Result)
 

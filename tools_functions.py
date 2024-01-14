@@ -1,4 +1,4 @@
-import os,shutil, fnmatch, csv 
+import os,shutil, fnmatch, csv, html
 from datetime import datetime
 from tools_getter_setter import *
 from bs4 import BeautifulSoup
@@ -126,10 +126,11 @@ def metadata_csv_creation(csv_source,type):
         #doc preparation
         f = open(file, "r", encoding="utf8")
         myHTMLContents = f.read()
+        myHTMLContents = html.unescape(myHTMLContents)
         f.close()
-    
+
         mySoup = BeautifulSoup(myHTMLContents, 'lxml')
-        
+
         # cle unique
         position_dernier_tiret = file.rfind('-')
         if position_dernier_tiret != -1:
@@ -139,33 +140,34 @@ def metadata_csv_creation(csv_source,type):
         doc_id = cle
         value = []
         if type == "INFO-SOC":
-            field = ["company", "city", "nb_employee", "company_description","type"]
+            field = ["company", "city", "nb_employee", "company_description","fondee","secteur","type entreprise","type"]
             value.append(Get_nom_entreprise_SOC(mySoup))
             value.append(Get_ville_entreprise_SOC(mySoup))
             value.append(Get_taille_entreprise_SOC(mySoup))
             value.append(Get_description_entreprise_SOC(mySoup))
-            value.append("INFO-SOC")
             value.append(Get_FONDES_entreprise_SOC(mySoup))
             value.append(Get_secteur_entreprise_SOC(mySoup))
             value.append(Get_type_entreprise_SOC(mySoup))
+            value.append("INFO-SOC")
         elif type == "AVIS-SOC":
             field = ["company","avg_rating","type"]
             value.append(Get_nom_entreprise_AVI(mySoup))
             value.append(Get_note_moy_entreprise_AVI(mySoup))
             value.append("AVIS-SOC")
         else:
-            field = ["lib_job","company","city", "job_description","type"]
+            field = ["lib_job","company","city","nb_candidat","date publication","Niveau hiérarchique","type_emploi","fonction","secteur", "job_description","type"]
             value.append(Get_libelle_emploi_EMP(mySoup))
             value.append(Get_nom_entreprise_EMP(mySoup))
             value.append(Get_ville_emploi_EMP(mySoup))
-            value.append(Get_texte_emploi_EMP(mySoup))
-            value.append("INFO-EMP")
             value.append(Get_nb_empl(mySoup))
             value.append(Get_date_publication(mySoup))
             value.append(Get_niveau_hierarchique(mySoup))
             value.append(Get_type_emploi(mySoup))
             value.append(Get_fonction(mySoup))
             value.append(Get_secteurs(mySoup))
+            value.append(Get_texte_emploi_EMP(mySoup))
+            value.append("INFO-EMP")
+
         for i, column in enumerate(field) :
             metadata.append([doc_id,column,value[i]])
         
@@ -179,7 +181,7 @@ def csv_maker(data_list,path):
     myPathMetaDataOut = path
     myPathFileNameMetaDataOut = myPathMetaDataOut + "/" + "metadata.csv"
     print(myPathMetaDataOut,myPathFileNameMetaDataOut)
-    f = open(myPathFileNameMetaDataOut, 'w', newline='', encoding="utf8")
+    f = open(myPathFileNameMetaDataOut, 'w', newline='', encoding="utf-8")
 
     myWriter = csv.writer(f, delimiter=';', quotechar='"',  quoting=csv.QUOTE_ALL, lineterminator='\n')
 
