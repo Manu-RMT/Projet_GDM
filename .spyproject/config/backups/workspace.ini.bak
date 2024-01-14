@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['main.py', 'tools_functions.py', 'tools_getter_setter.py']
+recent_files = ['..\\..\\COURS LYON 2\\COURS M2\\Machine Learning\\Projet\\MachineLearning_M2\\ModuleFonction.py', '..\\..\\COURS LYON 2\\COURS M2\\Machine Learning\\Projet\\MachineLearning_M2\\prepdata.py', '..\\..\\COURS LYON 2\\COURS M2\\Machine Learning\\Projet\\MachineLearning_M2\\Projet.py']
 
 [main]
 version = 0.2.0

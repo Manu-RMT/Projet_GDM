@@ -1,4 +1,4 @@
-import os,shutil, fnmatch, csv, pandas as pd
+import os,shutil, fnmatch, csv 
 from datetime import datetime
 from tools_getter_setter import *
 from bs4 import BeautifulSoup
@@ -55,6 +55,9 @@ def deplacement_fichier(path_source,path_destinatation, zone="landing_zone"):
             
 
 #==============================================================================
+
+
+# ==============================================================================
 #-- Création du script des métadonnées techniques
 #==============================================================================
 def creation_metadata_technique(path_source_data,path_landing_zone):
@@ -65,18 +68,18 @@ def creation_metadata_technique(path_source_data,path_landing_zone):
     #-- Remplissage l'entete de la liste 
     myListeDeLigneAEcrire.append('"cle_unique";"colonne";"valeur"'+"\n")
     
-    
+    i = 0
     folders = os.listdir(path_landing_zone)
     for folder in folders:
         if folder in ['GLASSDOOR','LINKEDIN']:
             for folder2 in os.listdir(path_landing_zone+folder):
-                print(folder2)
                 for file in os.listdir(path_landing_zone+folder+"/"+folder2):
                     # cle unique
                     position_dernier_tiret = file.rfind('-')
                     if position_dernier_tiret != -1:
                         cle = file[position_dernier_tiret + 1:]
-                        cle = cle[:-5]
+                        cle = cle[:-5] + "_" +str(i)
+                        i=i+1
                     #source 
                     source_file = folder
                     # date récupération
@@ -85,7 +88,7 @@ def creation_metadata_technique(path_source_data,path_landing_zone):
                     nom_file = file.split('-')
                     type_file = '-'.join(nom_file[5:7])
                     #lien html
-                    lien_file = os.path.join(path_landing_zone,folder,folder2,file)
+                    lien_file = path_landing_zone + "/" +folder + "/" + folder2 + "/" + file
                     #chemin fichier
                     
                     # construction des métadonnées
@@ -115,18 +118,16 @@ def creation_metadata_technique(path_source_data,path_landing_zone):
 #==============================================================================
 #-- Création du script des lignes de métadonnées descriptives
 #==============================================================================
-def metadata_creation(path_source,type):
+def metadata_csv_creation(csv_source,type):
     #metadata creation
     metadata = []
-    
-    files = os.listdir(path_source)
-    for file in files:
+   
+    for file in get_html_links_csv(csv_source, type):
         #doc preparation
-        myHTMLPathFileName = path_source+file
-        f = open(myHTMLPathFileName, "r", encoding="utf8")
+        f = open(file, "r", encoding="utf8")
         myHTMLContents = f.read()
         f.close()
-
+    
         mySoup = BeautifulSoup(myHTMLContents, 'lxml')
         
         # cle unique
@@ -144,6 +145,9 @@ def metadata_creation(path_source,type):
             value.append(Get_taille_entreprise_SOC(mySoup))
             value.append(Get_description_entreprise_SOC(mySoup))
             value.append("INFO-SOC")
+            value.append(Get_FONDES_entreprise_SOC(mySoup))
+            value.append(Get_secteur_entreprise_SOC(mySoup))
+            value.append(Get_type_entreprise_SOC(mySoup))
         elif type == "AVIS-SOC":
             field = ["company","avg_rating","type"]
             value.append(Get_nom_entreprise_AVI(mySoup))
@@ -156,16 +160,25 @@ def metadata_creation(path_source,type):
             value.append(Get_ville_emploi_EMP(mySoup))
             value.append(Get_texte_emploi_EMP(mySoup))
             value.append("INFO-EMP")
+            value.append(Get_nb_empl(mySoup))
+            value.append(Get_date_publication(mySoup))
+            value.append(Get_niveau_hierarchique(mySoup))
+            value.append(Get_type_emploi(mySoup))
+            value.append(Get_fonction(mySoup))
+            value.append(Get_secteurs(mySoup))
         for i, column in enumerate(field) :
             metadata.append([doc_id,column,value[i]])
-            
-    return(metadata) 
-    
-    
+        
+    return(metadata)
+
+
+# ==============================================================================
+# -- Création des CSV de metadata
+# ==============================================================================
 def csv_maker(data_list,path):
     myPathMetaDataOut = path
     myPathFileNameMetaDataOut = myPathMetaDataOut + "/" + "metadata.csv"
-
+    print(myPathMetaDataOut,myPathFileNameMetaDataOut)
     f = open(myPathFileNameMetaDataOut, 'w', newline='', encoding="utf8")
 
     myWriter = csv.writer(f, delimiter=';', quotechar='"',  quoting=csv.QUOTE_ALL, lineterminator='\n')
@@ -175,18 +188,16 @@ def csv_maker(data_list,path):
 
 
 #==============================================================================
-#-- Création du script des métadonnées descriptives
+#-- Création du script des métadonnées descriptives with CSV
 #==============================================================================
 def creation_metadata_descriptif(path_landing_zone,path_curated_zone):     
     metadata = []
     metadata.append(["Doc_ID","Field","Value"])
     
-    path_source = path_landing_zone + "GLASSDOOR/SOC/"
-    metadata.extend(metadata_creation(path_source,"INFO-SOC"))
-    path_source = path_landing_zone + "GLASSDOOR/AVI/"
-    metadata.extend(metadata_creation(path_source,"AVIS-SOC"))
-    path_source =  path_landing_zone + "LINKEDIN/EMP/"
-    metadata.extend(metadata_creation(path_source,"INFO-EMP"))
+    path_source = path_landing_zone + "MetaDonnees" + "/" +"metadata.csv"
+    metadata.extend(metadata_csv_creation(path_source,"INFO-SOC"))
+    metadata.extend(metadata_csv_creation(path_source,"AVIS-SOC"))
+    metadata.extend(metadata_csv_creation(path_source,"INFO-EMP"))
     
-    ### Stockage des métadonnées dans un csv
+    ## Stockage des métadonnées dans un csv
     csv_maker(metadata, os.path.join(path_curated_zone,"MetaDonnees"))
