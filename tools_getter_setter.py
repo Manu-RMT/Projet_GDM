@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 # ==============================================================================
 #-- LINKEDIN (EMPLOI) : Libellé de l'offre
@@ -179,7 +180,6 @@ def Get_note_moy_entreprise_AVI(Soup):
 #==============================================================================
 #-- GLASSDOOR (SOCIETE) : Fonction renvoyant le nom de l'entreprise
 #==============================================================================
-import re
 def Get_nom_entreprise_SOC(Soup):
     myTest = Soup.find_all('h1', attrs = {"strong tightAll"})[0].span.contents[0]
 

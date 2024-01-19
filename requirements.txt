@@ -6,3 +6,4 @@ html
 shutil
 fnmatch
 pandas
+re
