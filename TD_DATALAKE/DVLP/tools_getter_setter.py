@@ -242,7 +242,6 @@ def Get_FONDES_entreprise_SOC(Soup):
         if trouve == True:
             continue
         type_donne = str(Soup.find_all('div', attrs={'class': "infoEntity"})[i].label.contents[0])
-        print(type_donne)
         if type_donne == "Fondé en":
             myTest = str(Soup.find_all('div', attrs={'class': "infoEntity"})[i].span.contents[0])
             trouve = True
